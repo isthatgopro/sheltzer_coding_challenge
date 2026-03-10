@@ -57,5 +57,4 @@ If you choose to do so, please include the repository link in your email reply o
 
 ### Final Submission
 Please package your recording, code, and any output files into a single folder, compress it as a .zip file, and upload it to the OneDrive folder below:
-https://office365stanford-my.sharepoint.com/:f:/g/personal/luqiao_stanford_edu/IgDFxtzcCfP1Tr9E0ThrcQqwAd8Mnpiz1OnkU9951HHIcsI
 Note: Maximum of 3 submissions are allowed, but we will only review the latest version provided.
