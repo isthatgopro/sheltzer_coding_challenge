@@ -1,0 +1,57 @@
+---
+title: "Coding Challenge"
+author: "Sheltzer Lab"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: hide
+    toc: yes
+    toc_float: yes
+    toc_depth: 3
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE}
+library(tidyverse)
+```
+
+```{r, message=FALSE}
+raw.samples <- read_tsv('data/brca_metabric/data_clinical_sample.txt', comment = '#')
+raw.mutations <- read_tsv('data/brca_metabric/data_mutations.txt', comment = '#')
+```
+
+## Questions
+
+1. In words, describe the two input data files? What is the format of each?
+2. In words, describe what the two code blocks below do?
+3. Based on this code, how would you preprocess the data to reduce code redundancy? How would you test your preprocessing?
+4. How would you test if the different breast cancer subtypes differ in their TP53 mutation rate?
+5. What would you change about this code? Do you see any bugs?
+
+## Code
+
+```{r}
+raw.mutations %>%
+  filter(Variant_Classification != 'Silent') %>%
+  group_by(Hugo_Symbol) %>%
+  summarize(n = n_distinct(Tumor_Sample_Barcode)) %>%
+  slice_max(order_by = n, n = 10)
+```
+
+```{r}
+raw.mutations %>%
+  filter(Variant_Classification != 'Silent') %>%
+  inner_join(
+    raw.samples %>%
+      select(SAMPLE_ID, CANCER_TYPE_DETAILED),
+    by = c('Tumor_Sample_Barcode' = 'SAMPLE_ID')
+  ) %>%
+  group_by(Hugo_Symbol, CANCER_TYPE_DETAILED) %>%
+  summarize(n = n_distinct(Tumor_Sample_Barcode), .groups = 'drop') %>%
+  group_by(CANCER_TYPE_DETAILED) %>%
+  slice_max(order_by = n, n = 1)
+```
